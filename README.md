@@ -61,27 +61,35 @@ Follow these exact steps to run the comprehensive DevSecOps pipeline architectur
 
 1.  **Install `kind` and create a cluster**:
     ```bash
-    curl -Lo ./kind [https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64](https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64)
-    chmod +x ./kind
-    sudo mv ./kind /usr/local/bin/kind
+    # Download and install kind
+    curl -Lo kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+    chmod +x kind
+    sudo mv kind /usr/local/bin/
+
+    # Create the Kubernetes cluster
     kind create cluster --name devsecops-cluster
     ```
+
 2.  **Build the Docker image**:
     ```bash
     docker build -t llm-compression-api:latest .
     ```
+
 3.  **Load the image into your kind cluster**:
     ```bash
     kind load docker-image llm-compression-api:latest --name devsecops-cluster
     ```
+
 4.  **Apply the Kubernetes deployment and service manifests**:
     ```bash
     kubectl apply -f k8s/
     ```
+
 5.  **Verify that the application pods are running correctly**:
     ```bash
     kubectl get pods
     ```
+
 6.  **Forward the service port to your local machine**:
     ```bash
     kubectl port-forward svc/llm-compression-service 8000:80
