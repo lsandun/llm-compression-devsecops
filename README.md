@@ -5,7 +5,30 @@
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
 
-![Architecture Diagram](https://via.placeholder.com/800x400?text=DevSecOps+Pipeline+Architecture)
+## DevSecOps Architecture Diagram
+
+```mermaid
+flowchart LR
+    subgraph CI/CD Pipeline [Automated GitHub Actions]
+        A[Code Push] --> B(Bandit: SAST Scan)
+        B --> C(Pytest: Unit Tests)
+        C --> D(Docker Build)
+        D --> E(Trivy: Container Scan)
+    end
+    
+    subgraph Kubernetes Deployment [Local kind Cluster]
+        E -->|If Secure| F((K8s Service\nLoad Balancer))
+        F --> G[Pod 1: API]
+        F --> H[Pod 2: API]
+        F --> I[Pod 3: API]
+    end
+    
+    style A fill:#2ea44f,stroke:#fff,color:#fff
+    style B fill:#d73a49,stroke:#fff,color:#fff
+    style C fill:#0366d6,stroke:#fff,color:#fff
+    style E fill:#d73a49,stroke:#fff,color:#fff
+    style F fill:#f9c513,stroke:#333,color:#333
+```
 
 ## Overview
 
@@ -13,13 +36,13 @@ Welcome to the **Secure CI/CD Pipeline for ML/LLM API**! This is a comprehensive
 
 ## Technologies Used
 
-*   **Python (FastAPI)**: High-performance backend framework for the Mock API.
-*   **Docker**: Containerization ensuring consistent environments.
-*   **GitHub Actions**: Automated CI/CD orchestrator.
-*   **Kubernetes (kind)**: Local cluster orchestration and scalable deployments.
-*   **Bandit (SAST)**: Static application security testing for Python code.
-*   **Trivy (Container Scanning)**: Vulnerability scanning for OS and dependencies.
-*   **Pytest**: Automated unit testing framework.
+* **Python (FastAPI)**: High-performance backend framework for the Mock API.
+* **Docker**: Containerization ensuring consistent environments.
+* **GitHub Actions**: Automated CI/CD orchestrator.
+* **Kubernetes (kind)**: Local cluster orchestration and scalable deployments.
+* **Bandit (SAST)**: Static application security testing for Python code.
+* **Trivy (Container Scanning)**: Vulnerability scanning for OS and dependencies.
+* **Pytest**: Automated unit testing framework.
 
 ## Two-Tier Security Architecture (Shift-Left)
 
@@ -52,7 +75,7 @@ Follow these exact steps to run the comprehensive DevSecOps pipeline architectur
     ```bash
     kubectl apply -f k8s/
     ```
-5.  **Verify that the applications pods are running correctly**:
+5.  **Verify that the application pods are running correctly**:
     ```bash
     kubectl get pods
     ```
@@ -60,7 +83,7 @@ Follow these exact steps to run the comprehensive DevSecOps pipeline architectur
     ```bash
     kubectl port-forward svc/llm-compression-service 8000:80
     ```
-    *The API will now be securely accessible at `http://localhost:8000`.*
+    *The API will now be securely accessible at `http://localhost:8000/docs`.*
 
 ---
 
