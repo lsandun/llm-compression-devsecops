@@ -8,26 +8,26 @@
 ## DevSecOps Architecture Diagram
 
 ```mermaid
-flowchart LR
-    subgraph CI/CD Pipeline [Automated GitHub Actions]
-        A[Code Push] --> B(Bandit: SAST Scan)
-        B --> C(Pytest: Unit Tests)
-        C --> D(Docker Build)
-        D --> E(Trivy: Container Scan)
+graph LR
+    subgraph ci ["Automated GitHub Actions"]
+        A["Code Push"] --> B("Bandit: SAST Scan")
+        B --> C("Pytest: Unit Tests")
+        C --> D("Docker Build")
+        D --> E("Trivy: Container Scan")
     end
     
-    subgraph Kubernetes Deployment [Local kind Cluster]
-        E -->|If Secure| F((K8s Service\nLoad Balancer))
-        F --> G[Pod 1: API]
-        F --> H[Pod 2: API]
-        F --> I[Pod 3: API]
+    subgraph k8s ["Local kind Cluster"]
+        E -->|"If Secure"| F(("K8s Service Load Balancer"))
+        F --> G["Pod 1: API"]
+        F --> H["Pod 2: API"]
+        F --> I["Pod 3: API"]
     end
     
-    style A fill:#2ea44f,stroke:#fff,color:#fff
-    style B fill:#d73a49,stroke:#fff,color:#fff
-    style C fill:#0366d6,stroke:#fff,color:#fff
-    style E fill:#d73a49,stroke:#fff,color:#fff
-    style F fill:#f9c513,stroke:#333,color:#333
+    style A fill:#2ea44f,color:#fff
+    style B fill:#d73a49,color:#fff
+    style C fill:#0366d6,color:#fff
+    style E fill:#d73a49,color:#fff
+    style F fill:#f9c513,color:#000
 ```
 
 ## Overview
@@ -61,6 +61,9 @@ Follow these exact steps to run the comprehensive DevSecOps pipeline architectur
 
 1.  **Install `kind` and create a cluster**:
     ```bash
+    curl -Lo ./kind [https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64](https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64)
+    chmod +x ./kind
+    sudo mv ./kind /usr/local/bin/kind
     kind create cluster --name devsecops-cluster
     ```
 2.  **Build the Docker image**:
