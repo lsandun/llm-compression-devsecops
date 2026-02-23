@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llm-compression-deployment
+  labels:
+    app: llm-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: llm-api
+  template:
+    metadata:
+      labels:
+        app: llm-api
+    spec:
+      containers:
+      - name: llm-compression-api
+        image: llm-compression-api:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
