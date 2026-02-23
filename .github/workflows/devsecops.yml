@@ -30,6 +30,9 @@ jobs:
       - name: Run Bandit SAST
         run: bandit -r main.py
 
+      - name: Run Pytest Unit Tests
+        run: pytest test_main.py -v
+
   build-and-scan:
     name: Build Image and Container Scan (Trivy)
     runs-on: ubuntu-latest
